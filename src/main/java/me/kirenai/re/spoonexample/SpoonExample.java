@@ -8,6 +8,7 @@ import spoon.reflect.declaration.CtField;
 import spoon.reflect.declaration.ModifierKind;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 
 public class SpoonExample {
@@ -18,15 +19,18 @@ public class SpoonExample {
         launcher.addInputResource("src/main/java/me/kirenai/re/spoonexample/model");
 
         launcher.buildModel();
+        launcher.getEnvironment().setAutoImports(true);
+        launcher.getEnvironment().setTabulationSize(4);
+        launcher.getEnvironment().useTabulations(true);
 
         CtModel model = launcher.getModel();
 
         for (CtClass<?> ctClass : model.getElements(new NameFilter<CtClass<?>>("Person"))) {
-            CtField<String> newField = launcher.getFactory().Field().create(
+            CtField<Date> newField = launcher.getFactory().Field().create(
                     ctClass,
                     new HashSet<>(Collections.singletonList(ModifierKind.PRIVATE)),
-                    launcher.getFactory().Type().createReference("String"),
-                    "name"
+                    launcher.getFactory().Type().createReference(Date.class),
+                    "creationDate"
             );
 
             ctClass.addField(newField);
